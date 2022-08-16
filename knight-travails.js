@@ -1,4 +1,4 @@
-const squareRegistry = new Map();
+const tileRegistry = new Map();
 
 const chessTile = (x, y) => {
     const xPosition = x
@@ -30,5 +30,13 @@ const chessTile = (x, y) => {
     const createKnightMove = () => {
         return knightOffsets.map((offset) => newSquareForm(offset[0], offset[1]))
                             .filter((tile) => tile !== undefined)
+    }
+
+    if (tileRegistry.has(name())) {
+        return tileRegistry.get(name());
+    } else {
+        newTile = {name, getPredecessor, setPredecessor, createKnightMove}
+        tileRegistry.set(name(), newTile);
+        return newTile;
     }
 }
