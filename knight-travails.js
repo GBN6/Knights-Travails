@@ -5,7 +5,7 @@ const chessTile = (x, y) => {
     const yPosition = y;
     let predecessor;
 
-    const knightOffests = [
+    const knightOffsets = [
         [1,2], [1,-2],
         [2,1], [2,-1],
         [-1,2], [-1,-2],
@@ -15,7 +15,7 @@ const chessTile = (x, y) => {
     const getPredecessor = () => predecessor;
     const setPredecessor = (newPredecessor) => {
         predecessor = predecessor || newPredecessor;
-    }
+    } 
 
     const name = () => `${x}, ${y}`
 
@@ -40,3 +40,29 @@ const chessTile = (x, y) => {
         return newTile;
     }
 }
+
+const KnightTravails = (start, finish) => {
+    tileRegistry.clear();
+
+    const beginning = chessTile(...start);
+    const end = chessTile(...finish);
+
+    const queue = [beginning];
+    while (!queue.includes(end)) {
+        const currentTile = queue.shift();
+
+        const enqueueList = currentTile.createKnightMove();
+        enqueueList.forEach((tile) => tile.setPredecessor(currentTile));
+        queue.push(...enqueueList);
+    }
+    const path = [end];
+    while(!path.includes(beginning)) {
+        const previousTile = path[0].getPredecessor();
+        path.unshift(previousTile);
+    }
+    console.log(`Shortest path was ${path.length - 1} moves`)
+    console.log('The moves were:');
+    path.forEach(tile => console.log(tile.name()));
+}
+
+module.exports = KnightTravails;
